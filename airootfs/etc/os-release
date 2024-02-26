@@ -1,0 +1,9 @@
+NAME=CLD
+ID=cld
+ID_LIKE=arch
+BUILD_ID=rolling
+ANSI_COLOR="0;36"
+HOME_URL="https://discord.gg/skMtjZznYu"
+SUPPORT_URL="https://discord.gg/skMtjZznYu"
+BUG_REPORT_URL="https://discord.gg/skMtjZznYu"
+LOGO=cld-hello
