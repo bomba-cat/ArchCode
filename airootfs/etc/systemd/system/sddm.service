@@ -1,0 +1,10 @@
+[Unit]
+Description=SDDM
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/sddm
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
