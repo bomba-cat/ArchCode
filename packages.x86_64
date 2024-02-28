@@ -33,6 +33,7 @@ wireplumber
 xdg-user-dirs
 xdg-utils
 xorg-xrandr
+lightdm
 
 alsa-utils
 amd-ucode
