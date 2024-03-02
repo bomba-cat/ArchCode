@@ -1,9 +1,8 @@
 git
 plasma-desktop
+plasma-meta
 kitty
 docker
-virtualbox
-qemu
 code
 gcc
 nasm
@@ -12,7 +11,7 @@ npm
 cargo
 ripgrep
 make
-sddm
+lightdm
 acpi
 acpid
 archiso

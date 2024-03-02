@@ -1,9 +1,9 @@
 [Unit]
-Description=SDDM
+Description=LightDM
 After=network.target
 
 [Service]
-ExecStart=/usr/bin/sddm
+ExecStart=/usr/bin/lightdm
 Restart=always
 
 [Install]
