@@ -33,11 +33,13 @@ wireplumber
 xdg-user-dirs
 xdg-utils
 xorg-xrandr
+tk
+firefox
+dolphin
 
 alsa-utils
 amd-ucode
 arch-install-scripts
-archinstall
 b43-fwcutter
 base
 bcachefs-tools
