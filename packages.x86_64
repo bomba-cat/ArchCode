@@ -7,6 +7,7 @@ code
 gcc
 nasm
 python
+python-pip
 jdk-openjdk
 npm
 cargo
