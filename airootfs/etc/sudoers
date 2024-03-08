@@ -1,0 +1,2 @@
+root ALL=(ALL:ALL) ALL
+CLD ALL=(ALL:ALL) ALL
