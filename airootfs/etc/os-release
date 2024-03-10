@@ -1,9 +1,9 @@
-NAME=CLD
-ID=cld
+NAME=ArchCode
+ID=archcode
 ID_LIKE=arch
 BUILD_ID=rolling
 ANSI_COLOR="0;36"
-HOME_URL="https://discord.gg/skMtjZznYu"
+HOME_URL="https://archcode-linux.onrender.com"
 SUPPORT_URL="https://discord.gg/skMtjZznYu"
-BUG_REPORT_URL="https://discord.gg/skMtjZznYu"
-LOGO=cld-hello
+BUG_REPORT_URL="https://github.com/xk-rl/CLD/issues"
+LOGO=archcode-hello

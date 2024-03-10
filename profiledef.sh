@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2034
 
-iso_name="CLD"
-iso_label="CLD_$(date --date="@${SOURCE_DATE_EPOCH:-$(date +%s)}" +%Y%m)"
-iso_publisher="CLD <https://discord.gg/skMtjZznYu>"
-iso_application="CLD Live ISO"
+iso_name="ArchCode"
+iso_label="ArchCode_$(date --date="@${SOURCE_DATE_EPOCH:-$(date +%s)}" +%Y%m)"
+iso_publisher="ArchCode <https://discord.gg/skMtjZznYu>"
+iso_application="ArchCode Live ISO"
 iso_version="$(date --date="@${SOURCE_DATE_EPOCH:-$(date +%s)}" +%Y.%m.%d)"
 install_dir="arch"
 buildmodes=('iso')
