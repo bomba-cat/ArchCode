@@ -1,5 +1,6 @@
 # ***__What is ArchCode?__***
-ArchCode is an Arch-based Linux distribution made for coders.
+ArchCode is an Arch-based Linux distribution made for coders. It just teaches the user to work on their own and not rely on their system to do the things for them
+
 
 # ***__Why Arch-based?__***
 Arch is an open-source distribution that is lightweight and fast. It's also got the AUR (Arch User Repository) and the AUR helper (yay)
