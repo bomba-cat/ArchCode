@@ -35,6 +35,43 @@ commands = [
     f"pacstrap /mnt base linux linux-firmware"
 ]
 
+postpackages = [
+    #Environment stuff
+    "plasma-meta"
+    "plasma-desktop"
+
+    #Editor stuff
+    "vim"
+    "neovim"
+    "nano"
+    "code"
+
+    #Coding stuff
+    "nasm"
+    "gcc"
+    "make"
+    "cmake"
+    "openjdk"
+    "python"
+    "python-pip"
+    "python-numpy"
+    "python3"
+    "python3-pip"
+    "python3-numpy"
+    "nodejs"
+    "nodejs-npm"
+    "go"
+    "cargo"
+
+    #Internet stuff
+    "firefox"
+
+    #Terminal stuff
+    "kitty"
+    "zsh"
+
+]
+
 #Create window class
 installer = ThemedTk(theme="breeze")
 
@@ -85,6 +122,33 @@ def Installing():
     global commands, packages
     #Label saying installing
     tk.Label(installer, text="Installing", font=("Courier New", 20)).place(relx=0.5, rely=0.5, anchor="center")
+    
+    #Label saying installing packages
+    for widget in installer.winfo_children():               #Clear all widgets
+        widget.destroy()
+    tk.Label(installer, text="Installing packages", font=("Courier New", 20)).place(relx=0.5, rely=0.6, anchor="center")
+    for i in packages:
+        linux.system(f"pacman -S {i} --noconfirm")
+    
+    #Label saying installing commands
+    for widget in installer.winfo_children():               #Clear all widgets
+        widget.destroy()
+    tk.Label(installer, text="Installing commands", font=("Courier New", 20)).place(relx=0.5, rely=0.6, anchor="center")
+    for i in commands:
+        linux.system(i)
+
+    #Label saying installing postpackages
+    for widget in installer.winfo_children():               #Clear all widgets
+        widget.destroy()
+    tk.Label(installer, text="Installing postpackages", font=("Courier New", 20)).place(relx=0.5, rely=0.6, anchor="center")
+    linux.system("pacman -Syy")
+    for i in postpackages:
+        linux.system(f"pacman -S {i} --noconfirm")
+    
+    for widget in installer.winfo_children():               #Clear all widgets
+        widget.destroy()
+    tk.Label(installer, text="Installation complete", font=("Courier New", 20)).place(relx=0.5, rely=0.5, anchor="center")
+    tk.Button(installer, text="Reboot", command=installer.destroy).place(relx=0.5, rely=0.6, anchor="center")
 
 
 #Welcome
