@@ -118,6 +118,8 @@ def GetDrives(chosenKernel):
         if d != "":
             tk.Radiobutton(installer, text=d, value=d, variable=drive).place(relx=0.5, rely=0.3+(drives.index(d)*0.1), anchor="center")
 
+    tk.Button(installer, text="Next", command=lambda: print(drive)).place(relx=0.5, rely=0.7, anchor="center")
+
 def Installing():
     global commands, packages
     #Label saying installing
