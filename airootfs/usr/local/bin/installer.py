@@ -4,12 +4,16 @@ from tkinter import ttk as tk
 from ttkthemes import ThemedTk
 import os as linux
 
+#Create window class
+installer = ThemedTk(theme="breeze")
+
 #Variables
 user = ""
 passw = ""
 sudo = False
 kernel = ""
-drive = ""
+drivevar = ntk.StringVar(installer, "")
+drive = drivevar.get()
 
 #Commands
 packages = [
@@ -62,6 +66,10 @@ postpackages = [
     "nodejs-npm"
     "go"
     "cargo"
+    "mariadb"
+    "mysql"
+    "curl"
+    "git"
 
     #Internet stuff
     "firefox"
@@ -72,8 +80,12 @@ postpackages = [
 
 ]
 
-#Create window class
-installer = ThemedTk(theme="breeze")
+def sudoCheck():
+    global sudo
+    if sudo == True:
+        sudo = False
+    else:
+        sudo = True
 
 #Get user and password
 def GetUserPass():
@@ -87,7 +99,7 @@ def GetUserPass():
     tk.Entry(installer, textvariable=user, font=("Courier New", 20)).place(relx=0.5, rely=0.3, anchor="center")
     tk.Label(installer, text="Enter password:", font=("Courier New", 20)).place(relx=0.5, rely=0.4, anchor="center")
     tk.Entry(installer, textvariable=passw, show="*", font=("Courier New", 20)).place(relx=0.5, rely=0.5, anchor="center")
-    tk.Checkbutton(installer, text="Root", variable=sudo).place(relx=0.5, rely=0.6, anchor="center")
+    tk.Checkbutton(installer, text="Root", command=sudoCheck).place(relx=0.5, rely=0.6, anchor="center")
     tk.Button(installer, text="Next", command=GetKernel).place(relx=0.5, rely=0.7, anchor="center")
 
 def GetKernel():
@@ -116,9 +128,16 @@ def GetDrives(chosenKernel):
 
     for d in drives:
         if d != "":
-            tk.Radiobutton(installer, text=d, value=d, variable=drive).place(relx=0.5, rely=0.3+(drives.index(d)*0.1), anchor="center")
+            tk.Radiobutton(installer, text=d, value=d, variable=drivevar).place(relx=0.5, rely=0.3+(drives.index(d)*0.1), anchor="center")
 
-    tk.Button(installer, text="Next", command=lambda: print(drive)).place(relx=0.5, rely=0.7, anchor="center")
+    tk.Button(installer, text="Next", command=setdrive).place(relx=0.5, rely=0.7, anchor="center")
+
+def setdrive():
+    global drivevar, drive
+    drive = drivevar.get()
+    if "nvme" in drive:
+        drive = f"{drive}p"
+    #Installing()
 
 def Installing():
     global commands, packages
