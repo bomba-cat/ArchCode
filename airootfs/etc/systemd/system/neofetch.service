@@ -1,9 +1,9 @@
 [Unit]
-Description=LightDM
-After=neofetch.service
+Description=neofetch
+After=network.target
 
 [Service]
-ExecStart=/usr/bin/lightdm
+ExecStart=/bin/neofetch
 Restart=always
 
 [Install]

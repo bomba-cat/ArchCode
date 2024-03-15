@@ -14,6 +14,7 @@ sudo = False
 kernel = ""
 drivevar = ntk.StringVar(installer, "")
 drive = drivevar.get()
+driveclean = drivevar.get()
 
 #Commands
 packages = [
@@ -27,8 +28,8 @@ commands = [
     f"parted {drive} mklabel gpt"
     f"parted {drive} mkpart primary fat32 1MiB 300MiB"
     f"parted {drive} set 1 boot on"
-    f"parted {drive} mkpart primary linux-swap 300MiB 3GiB"
-    f"parted {drive} mkpart primary ext4 3GiB 100%"
+    f"parted {drive} mkpart primary linux-swap 300MiB 4GiB"
+    f"parted {drive} mkpart primary ext4 4GiB 100%"
     f"mkfs.fat -F32 {drive}1"
     f"mkswap {drive}2"
     f"swapon {drive}2"
@@ -36,7 +37,10 @@ commands = [
     f"mount {drive}3 /mnt"
     f"mkdir /mnt/boot"
     f"mount {drive}1 /mnt/boot"
-    f"pacstrap /mnt base linux linux-firmware"
+    f"pacstrap -K /mnt base linux linux-firmware"
+    f"genfstab -U /mnt >> /mnt/etc/fstab"
+    f"arch-chroot /mnt"
+
 ]
 
 postpackages = [
@@ -82,7 +86,13 @@ postpackages = [
 ]
 
 postcommands = [
-    ""
+    "sudo pacman -Syu"
+    "sudo pacman -S --needed base-devel git"
+    "git clone https://aur.archlinux.org/yay.git"
+    "cd yay"
+    "makepkg -si"
+    "cd .."
+    "rm -rf yay"
 ]
 
 def sudoCheck():
@@ -142,20 +152,22 @@ def setdrive():
     drive = drivevar.get()
     if "nvme" in drive:
         drive = f"{drive}p"
+    driveclean = drive
+    drive = f"/dev/{drive}"
     #Installing()
 
 def Installing():
     global commands, packages
     #Label saying installing
     tk.Label(installer, text="Installing", font=("Courier New", 20)).place(relx=0.5, rely=0.5, anchor="center")
-    
+
     #Label saying installing packages
     for widget in installer.winfo_children():               #Clear all widgets
         widget.destroy()
     tk.Label(installer, text="Installing packages", font=("Courier New", 20)).place(relx=0.5, rely=0.6, anchor="center")
     for i in packages:
         linux.system(f"pacman -S {i} --noconfirm")
-    
+
     #Label saying installing commands
     for widget in installer.winfo_children():               #Clear all widgets
         widget.destroy()
@@ -170,7 +182,7 @@ def Installing():
     linux.system("pacman -Syy")
     for i in postpackages:
         linux.system(f"pacman -S {i} --noconfirm")
-    
+
     #Label saying executing postcommands
     tk.Label(installer, text="Executing postcommands", font=("Courier New", 20)).place(relx=0.5, rely=0.6, anchor="center")
     for i in postcommands:
