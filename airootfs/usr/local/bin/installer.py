@@ -16,6 +16,8 @@ drivevar = ntk.StringVar(installer, "")
 drive = drivevar.get()
 driveclean = drivevar.get()
 
+timezone = ""
+
 #Commands
 packages = [
     "parted"
@@ -40,7 +42,8 @@ commands = [
     f"pacstrap -K /mnt base linux linux-firmware"
     f"genfstab -U /mnt >> /mnt/etc/fstab"
     f"arch-chroot /mnt"
-
+    f"ln -sf /usr/share/zoneinfo/{timezone} /etc/localtime"
+    f"hwclock --systohc"
 ]
 
 postpackages = [
@@ -147,6 +150,14 @@ def GetDrives(chosenKernel):
 
     tk.Button(installer, text="Next", command=setdrive).place(relx=0.5, rely=0.7, anchor="center")
 
+def GetLocales():
+    global timezone
+    for widget in installer.winfo_children():               #Clear all widgets
+        widget.destroy()
+    tk.Label(installer, text="Locales", font=("Courier New", 40)).place(relx=0.5, rely=0.1, anchor="center")
+    tk.Entry(installer, textvariable=timezone, font=("Courier New", 20)).place(relx=0.5, rely=0.3, anchor="center")
+    tk.Button(installer, text="Next", command=Installing).place(relx=0.5, rely=0.7, anchor="center")
+
 def setdrive():
     global drivevar, drive
     drive = drivevar.get()
@@ -154,7 +165,7 @@ def setdrive():
         drive = f"{drive}p"
     driveclean = drive
     drive = f"/dev/{drive}"
-    #Installing()
+    GetLocales()
 
 def Installing():
     global commands, packages
