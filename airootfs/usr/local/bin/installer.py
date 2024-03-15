@@ -43,6 +43,7 @@ postpackages = [
     #Environment stuff
     "plasma-meta"
     "plasma-desktop"
+    "dolphin"
 
     #Editor stuff
     "vim"
@@ -78,6 +79,10 @@ postpackages = [
     "kitty"
     "zsh"
 
+]
+
+postcommands = [
+    ""
 ]
 
 def sudoCheck():
@@ -166,6 +171,11 @@ def Installing():
     for i in postpackages:
         linux.system(f"pacman -S {i} --noconfirm")
     
+    #Label saying executing postcommands
+    tk.Label(installer, text="Executing postcommands", font=("Courier New", 20)).place(relx=0.5, rely=0.6, anchor="center")
+    for i in postcommands:
+        linux.system(i)
+
     for widget in installer.winfo_children():               #Clear all widgets
         widget.destroy()
     tk.Label(installer, text="Installation complete", font=("Courier New", 20)).place(relx=0.5, rely=0.5, anchor="center")
