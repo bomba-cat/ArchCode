@@ -1,0 +1,11 @@
+#!/bin/bash
+
+#Check if sudo
+if [ "$EUID" -ne 0 ]
+	then echo "Please run as root"
+	exit
+fi
+
+git clone https://github.com/xk-rl/ArchCodeInstall
+cd ArchCodeInstall
+python3 installer.py
