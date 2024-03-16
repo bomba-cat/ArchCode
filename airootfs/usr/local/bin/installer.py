@@ -11,7 +11,10 @@ installer = ThemedTk(theme="breeze")
 user = ""
 passw = ""
 sudo = False
+hostname = ""
+
 kernel = ""
+
 drivevar = ntk.StringVar(installer, "")
 drive = drivevar.get()
 driveclean = drivevar.get()
@@ -25,6 +28,7 @@ packages = [
 
 commands = [
     "timedatectl"
+
     "mkdir /mnt/boot"
     #Setup partitions for arch linux: EFI, SWAP and ROOT using ext4 fs
     f"parted {drive} mklabel gpt"
@@ -32,18 +36,48 @@ commands = [
     f"parted {drive} set 1 boot on"
     f"parted {drive} mkpart primary linux-swap 300MiB 4GiB"
     f"parted {drive} mkpart primary ext4 4GiB 100%"
+
+    #Format partitions
     f"mkfs.fat -F32 {drive}1"
     f"mkswap {drive}2"
     f"swapon {drive}2"
     f"mkfs.ext4 {drive}3"
     f"mount {drive}3 /mnt"
-    f"mkdir /mnt/boot"
+    "mkdir /mnt/boot"
     f"mount {drive}1 /mnt/boot"
-    f"pacstrap -K /mnt base linux linux-firmware"
-    f"genfstab -U /mnt >> /mnt/etc/fstab"
-    f"arch-chroot /mnt"
+
+    #Pacstrap
+    "pacstrap -K /mnt base linux linux-firmware"
+    "genfstab -U /mnt >> /mnt/etc/fstab"
+
+    #Chroot
+    "arch-chroot /mnt"
+
+    #Set timezone
     f"ln -sf /usr/share/zoneinfo/{timezone} /etc/localtime"
-    f"hwclock --systohc"
+    "hwclock --systohc"
+
+    #Set locales
+
+    "echo 'LANG=en_US.UTF-8' > /etc/locale.conf"
+    "echo 'en_US.UTF-8 UTF-8' > /etc/locale.gen"
+    "locale-gen"
+
+    #Set hostname
+    f"echo '{hostname}' > /etc/hostname"
+
+    #Set passwd for root
+    f"echo 'root:{passw}' | chpasswd"
+
+    #Set user
+    f"useradd -m {user}"
+    f"echo '{user}:{passw}' | chpasswd"
+    f"usermod -aG wheel {user}"
+    f"echo '{user} ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers"
+
+    #Bootloader
+    "grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB"
+    "grub-mkconfig -o /boot/grub/grub.cfg"
 ]
 
 postpackages = [
@@ -107,18 +141,22 @@ def sudoCheck():
 
 #Get user and password
 def GetUserPass():
-    global user, passw, sudo
+    global user, passw, sudo, hostname
     for widget in installer.winfo_children():               #Clear all widgets
         widget.destroy()
     user = ntk.StringVar()
     passw = ntk.StringVar()
-    tk.Label(installer, text="Create user", font=("Courier New", 40)).place(relx=0.5, rely=0.1, anchor="center")
-    tk.Label(installer, text="Enter username:", font=("Courier New", 20)).place(relx=0.5, rely=0.2, anchor="center")
-    tk.Entry(installer, textvariable=user, font=("Courier New", 20)).place(relx=0.5, rely=0.3, anchor="center")
-    tk.Label(installer, text="Enter password:", font=("Courier New", 20)).place(relx=0.5, rely=0.4, anchor="center")
-    tk.Entry(installer, textvariable=passw, show="*", font=("Courier New", 20)).place(relx=0.5, rely=0.5, anchor="center")
-    tk.Checkbutton(installer, text="Root", command=sudoCheck).place(relx=0.5, rely=0.6, anchor="center")
-    tk.Button(installer, text="Next", command=GetKernel).place(relx=0.5, rely=0.7, anchor="center")
+
+    tk.Label(installer, text="Set Hostname", font=("Courier New", 40)).place(relx=0.5, rely=0.1, anchor="center")
+    tk.Entry(installer, textvariable=hostname, font=("Courier New", 20)).place(relx=0.5, rely=0.2, anchor="center")
+
+    tk.Label(installer, text="Create user", font=("Courier New", 40)).place(relx=0.5, rely=0.3, anchor="center")
+    tk.Label(installer, text="Enter username:", font=("Courier New", 20)).place(relx=0.5, rely=0.4, anchor="center")
+    tk.Entry(installer, textvariable=user, font=("Courier New", 20)).place(relx=0.5, rely=0.5, anchor="center")
+    tk.Label(installer, text="Enter password:", font=("Courier New", 20)).place(relx=0.5, rely=0.6, anchor="center")
+    tk.Entry(installer, textvariable=passw, show="*", font=("Courier New", 20)).place(relx=0.5, rely=0.7, anchor="center")
+    tk.Checkbutton(installer, text="Root", command=sudoCheck).place(relx=0.5, rely=0.8, anchor="center")
+    tk.Button(installer, text="Next", command=GetKernel).place(relx=0.5, rely=0.9, anchor="center")
 
 def GetKernel():
     global kernel
@@ -168,7 +206,7 @@ def setdrive():
     GetLocales()
 
 def Installing():
-    global commands, packages
+    global commands, packages, postcommands, postpackages, user, passw, sudo, hostname, drive, timezone, kernel, driveclean
     #Label saying installing
     tk.Label(installer, text="Installing", font=("Courier New", 20)).place(relx=0.5, rely=0.5, anchor="center")
 
