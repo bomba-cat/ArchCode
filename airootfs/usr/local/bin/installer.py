@@ -73,7 +73,10 @@ commands = [
     f"useradd -m {user}",
     f"echo '{user}:{passw}' | chpasswd",
     f"usermod -aG wheel {user}",
-    f"echo '{user} ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers",
+    f"echo '{user} ALL=(ALL:ALL) ALL' >> /etc/sudoers",
+
+    #Install grub and efibootmgr
+    "pacman -Sy grub efibootmgr --noconfirm",
 
     #Bootloader
     "grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB",
@@ -118,8 +121,15 @@ postpackages = [
     #Terminal stuff
     "kitty",
     "zsh"
-
 ]
+
+basepackages = []
+
+#open file
+with open("packages.x86_64", "r") as f:
+    basepack = f.readlines()
+    for i in basepack:
+        basepackages.append(i.strip())
 
 postcommands = [
     "sudo pacman -Syu",
@@ -214,7 +224,7 @@ def Installing():
         widget.destroy()
     tk.Label(installer, text="Installing packages", font=("Courier New", 20)).place(relx=0.5, rely=0.6, anchor="center")
     for i in packages:
-        linux.system(f"pacman -S {i} --noconfirm")
+        linux.system(f"pacman -Sy {i} --noconfirm")
 
     #Label saying installing commands
     for widget in installer.winfo_children():               #Clear all widgets
@@ -223,11 +233,18 @@ def Installing():
     for i in commands:
         linux.system(i)
 
+    #Label saying installing basepackages
+    for widget in installer.winfo_children():               #Clear all widgets
+        widget.destroy()
+    tk.Label(installer, text="Installing basepackages", font=("Courier New", 20)).place(relx=0.5, rely=0.6, anchor="center")
+    linux.system("pacman -Syu")
+    for i in basepackages:
+        linux.system(f"pacman -S {i} --noconfirm")
+
     #Label saying installing postpackages
     for widget in installer.winfo_children():               #Clear all widgets
         widget.destroy()
     tk.Label(installer, text="Installing postpackages", font=("Courier New", 20)).place(relx=0.5, rely=0.6, anchor="center")
-    linux.system("pacman -Syu")
     for i in postpackages:
         linux.system(f"pacman -S {i} --noconfirm")
 

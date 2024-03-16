@@ -3,12 +3,21 @@ git
 plasma-desktop
 plasma-meta
 kitty
+docker
+code
+gcc
+nasm
 python
 python-pip
+jdk-openjdk
+npm
+cargo
 ripgrep
+make
 lightdm
 acpi
 acpid
+archiso
 avahi
 dialog
 dosfstools
@@ -29,9 +38,12 @@ xorg-xrandr
 tk
 firefox
 dolphin
+neovim
 
 alsa-utils
 amd-ucode
+arch-install-scripts
+archinstall
 b43-fwcutter
 base
 bcachefs-tools
