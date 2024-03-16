@@ -27,108 +27,107 @@ packages = [
 ]
 
 commands = [
-    "timedatectl"
+    "timedatectl",
 
-    "mkdir /mnt/boot"
+    "mkdir /mnt/boot",
     #Setup partitions for arch linux: EFI, SWAP and ROOT using ext4 fs
-    f"parted {drive} mklabel gpt"
-    f"parted {drive} mkpart primary fat32 1MiB 300MiB"
-    f"parted {drive} set 1 boot on"
-    f"parted {drive} mkpart primary linux-swap 300MiB 4GiB"
-    f"parted {drive} mkpart primary ext4 4GiB 100%"
+    f"parted {drive} mklabel gpt",
+    f"parted {drive} mkpart primary fat32 1MiB 300MiB",
+    f"parted {drive} set 1 boot on",
+    f"parted {drive} mkpart primary linux-swap 300MiB 4GiB",
+    f"parted {drive} mkpart primary ext4 4GiB 100%",
 
     #Format partitions
-    f"mkfs.fat -F32 {drive}1"
-    f"mkswap {drive}2"
-    f"swapon {drive}2"
-    f"mkfs.ext4 {drive}3"
-    f"mount {drive}3 /mnt"
-    "mkdir /mnt/boot"
-    f"mount {drive}1 /mnt/boot"
+    f"mkfs.fat -F32 {drive}1",
+    f"mkswap {drive}2",
+    f"swapon {drive}2",
+    f"mkfs.ext4 {drive}3,"
+    f"mount {drive}3 /mnt",
+    "mkdir /mnt/boot",
+    f"mount {drive}1 /mnt/boot",
 
     #Pacstrap
-    "pacstrap -K /mnt base linux linux-firmware"
-    "genfstab -U /mnt >> /mnt/etc/fstab"
+    "pacstrap -K /mnt base linux linux-firmware",
+    "genfstab -U /mnt >> /mnt/etc/fstab",
 
     #Chroot
-    "arch-chroot /mnt"
+    "arch-chroot /mnt",
 
     #Set timezone
-    f"ln -sf /usr/share/zoneinfo/{timezone} /etc/localtime"
-    "hwclock --systohc"
+    f"ln -sf /usr/share/zoneinfo/{timezone} /etc/localtime",
+    "hwclock --systohc",
 
     #Set locales
 
-    "echo 'LANG=en_US.UTF-8' > /etc/locale.conf"
-    "echo 'en_US.UTF-8 UTF-8' > /etc/locale.gen"
-    "locale-gen"
+    "echo 'LANG=en_US.UTF-8' > /etc/locale.conf",
+    "echo 'en_US.UTF-8 UTF-8' > /etc/locale.gen",
+    "locale-gen",
 
     #Set hostname
-    f"echo '{hostname}' > /etc/hostname"
+    f"echo '{hostname}' > /etc/hostname",
 
     #Set passwd for root
-    f"echo 'root:{passw}' | chpasswd"
+    f"echo 'root:{passw}' | chpasswd",
 
     #Set user
-    f"useradd -m {user}"
-    f"echo '{user}:{passw}' | chpasswd"
-    f"usermod -aG wheel {user}"
-    f"echo '{user} ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers"
+    f"useradd -m {user}",
+    f"echo '{user}:{passw}' | chpasswd",
+    f"usermod -aG wheel {user}",
+    f"echo '{user} ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers",
 
     #Bootloader
-    "grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB"
+    "grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB",
     "grub-mkconfig -o /boot/grub/grub.cfg"
 ]
 
 postpackages = [
     #Environment stuff
-    "plasma-meta"
-    "plasma-desktop"
-    "dolphin"
+    "plasma-meta",
+    "plasma-desktop",
+    "dolphin",
 
     #Editor stuff
-    "vim"
-    "neovim"
-    "nano"
-    "code"
+    "vim",
+    "neovim",
+    "nano",
+    "code",
 
     #Coding stuff
-    "nasm"
-    "gcc"
-    "make"
-    "cmake"
-    "openjdk"
-    "python"
-    "python-pip"
-    "python-numpy"
-    "python3"
-    "python3-pip"
-    "python3-numpy"
-    "nodejs"
-    "nodejs-npm"
-    "go"
-    "cargo"
-    "mariadb"
-    "mysql"
-    "curl"
-    "git"
+    "nasm",
+    "gcc",
+    "make",
+    "cmake",
+    "openjdk",
+    "python",
+    "python-pip",
+    "python-numpy",
+    "python3",
+    "python3-pip",
+    "python3-numpy",
+    "nodejs",
+    "nodejs-npm",
+    "cargo",
+    "mariadb",
+    "mysql",
+    "curl",
+    "git",
 
     #Internet stuff
-    "firefox"
+    "firefox",
 
     #Terminal stuff
-    "kitty"
+    "kitty",
     "zsh"
 
 ]
 
 postcommands = [
-    "sudo pacman -Syu"
-    "sudo pacman -S --needed base-devel git"
-    "git clone https://aur.archlinux.org/yay.git"
-    "cd yay"
-    "makepkg -si"
-    "cd .."
+    "sudo pacman -Syu",
+    "sudo pacman -S --needed base-devel git",
+    "git clone https://aur.archlinux.org/yay.git",
+    "cd yay",
+    "makepkg -si",
+    "cd ..",
     "rm -rf yay"
 ]
 
