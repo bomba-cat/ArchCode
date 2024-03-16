@@ -1,9 +1,9 @@
 [Unit]
-Description=neofetch
+Description=Simple Display Manager
 After=network.target
 
 [Service]
-ExecStart=/usr/bin/neofetch
+ExecStart=/usr/bin/sddm
 Restart=always
 
 [Install]

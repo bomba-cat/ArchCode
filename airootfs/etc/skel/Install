@@ -6,6 +6,10 @@ if [ "$EUID" -ne 0 ]
 	exit
 fi
 
+pacman -Sy --noconfirm
+
+pip install ttkthemes --break-system-packages
+
 git clone https://github.com/xk-rl/ArchCodeInstall
 cd ArchCodeInstall
 python3 installer.py

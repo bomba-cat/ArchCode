@@ -2,10 +2,10 @@
 # shellcheck disable=SC2034
 
 iso_name="ArchCode"
-iso_label="ArchCode_$(date --date="@${SOURCE_DATE_EPOCH:-$(date +%s)}" +%Y%m)"
+iso_label="ArchCode"
 iso_publisher="ArchCode <https://discord.gg/skMtjZznYu>"
 iso_application="ArchCode Live ISO"
-iso_version="$(date --date="@${SOURCE_DATE_EPOCH:-$(date +%s)}" +%Y.%m.%d)"
+iso_version=""
 install_dir="arch"
 buildmodes=('iso')
 bootmodes=('bios.syslinux.mbr' 'bios.syslinux.eltorito'
@@ -20,7 +20,7 @@ file_permissions=(
   ["/etc/gshadow"]="0:0:400"
   ["/root"]="0:0:750"
   ["/root/.automated_script.sh"]="0:0:755"
-  ["/home/ArchCode/Desktop/Install"]="0:0:755"
+  ["/etc/skel/Desktop/Install"]="0:0:755"
   ["/root/.gnupg"]="0:0:700"
   ["/usr/local/bin/choose-mirror"]="0:0:755"
   ["/usr/local/bin/Installation_guide"]="0:0:755"
