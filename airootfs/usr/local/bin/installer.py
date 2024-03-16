@@ -228,7 +228,7 @@ def Installing():
     for widget in installer.winfo_children():               #Clear all widgets
         widget.destroy()
     tk.Label(installer, text="Installing postpackages", font=("Courier New", 20)).place(relx=0.5, rely=0.6, anchor="center")
-    linux.system("pacman -Syy")
+    linux.system("pacman -Syu")
     for i in postpackages:
         linux.system(f"pacman -S {i} --noconfirm")
 
