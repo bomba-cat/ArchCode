@@ -1,0 +1,8 @@
+[TabBox]
+LayoutName=big_icons
+
+[org.kde.kdecoration2]
+BorderSize=None
+NoPlugin=false
+library=org.kde.lightly
+theme=Lightly
