@@ -32,6 +32,7 @@ dolphin
 
 alsa-utils
 amd-ucode
+arch-install-scripts
 b43-fwcutter
 base
 bcachefs-tools

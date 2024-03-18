@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Check root
+if [[ $EUID -ne 0 ]]; then
+	echo "This script must be run as root" 
+	exit 1
+fi
+
+# Update system
+pacman -Sy
+
+# Install ttkthemes
+pip install ttkthemes --break-system-packages
+
+# clone repo to tmp folder
+mkdir tmp/
+cd tmp/
+git clone https://github.com/xk-rl/ArchCodeInstall.git
+
+cd ArchCodeInstall
+python3 installer.py
