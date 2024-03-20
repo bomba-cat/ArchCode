@@ -11,6 +11,7 @@ pacman -Sy
 
 # Install ttkthemes
 pip install ttkthemes --break-system-packages
+pip install argparse --break-system-packages
 
 # clone repo to tmp folder
 mkdir tmp/
